@@ -388,11 +388,62 @@
 	"buffers":
 	[
 		{
-			"file": "LightningEngine.sublime-project",
+			"file": "Assets/PhongLightning.shader",
 			"settings":
 			{
-				"buffer_size": 203,
+				"buffer_size": 5845,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Familie Dorstijn/AppData/Local/Temp/Temp1_builtin_shaders-2017.3.1f1.zip/DefaultResourcesExtra/Standard.shader",
+			"settings":
+			{
+				"buffer_size": 11946,
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/MCBlob.cs",
+			"settings":
+			{
+				"buffer_size": 40997,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/Editor/MCBlobEditor.cs",
+			"settings":
+			{
+				"buffer_size": 390,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "#pragma kernel Calculate\n\n// Define fallof function to be used. Options: GENERIC_METABALL_FUNCTION, ELECTRIC_POTENTIAL_FUNCTION\n#define GENERIC_METABALL_FUNCTION\n\n//\n// structs and buffers associated with them\n//\n\nstruct Values {\n\tfloat edge0Val, edge1Val, edge2Val, edge3Val, edge4Val, edge5Val, edge6Val, edge7Val;\n};\n\nstruct Positions {\n\tfloat3 centerPos;\n\tfloat3 edge0Pos, edge1Pos, edge2Pos, edge3Pos, edge4Pos, edge5Pos, edge6Pos, edge7Pos;\n};\n\nstruct Vertices {\n\tint index;\n\tfloat3 edge0, edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8, edge9, edge10, edge11;\n};\n\nstruct Ball {\n\tfloat factor;\n\tfloat3 position;\n};\n\nStructuredBuffer<Positions> positions;\nStructuredBuffer<Ball> metaballs;\nStructuredBuffer<float3> edgeMap;\n\nRWStructuredBuffer<Vertices> edgeVertices;\n\n//\n// misc variables\n//\n\nint width;\nint height;\nint numMetaballs;\n\nfloat threshold;\n\n//\n// lookup tables\n//\n\nstatic uint edgeTable[256] = {\n\t0x0  , 0x109, 0x203, 0x30a, 0x406, 0x50f, 0x605, 0x70c,\n\t0x80c, 0x905, 0xa0f, 0xb06, 0xc0a, 0xd03, 0xe09, 0xf00,\n\t0x190, 0x99 , 0x393, 0x29a, 0x596, 0x49f, 0x795, 0x69c,\n\t0x99c, 0x895, 0xb9f, 0xa96, 0xd9a, 0xc93, 0xf99, 0xe90,\n\t0x230, 0x339, 0x33 , 0x13a, 0x636, 0x73f, 0x435, 0x53c,\n\t0xa3c, 0xb35, 0x83f, 0x936, 0xe3a, 0xf33, 0xc39, 0xd30,\n\t0x3a0, 0x2a9, 0x1a3, 0xaa , 0x7a6, 0x6af, 0x5a5, 0x4ac,\n\t0xbac, 0xaa5, 0x9af, 0x8a6, 0xfaa, 0xea3, 0xda9, 0xca0,\n\t0x460, 0x569, 0x663, 0x76a, 0x66 , 0x16f, 0x265, 0x36c,\n\t0xc6c, 0xd65, 0xe6f, 0xf66, 0x86a, 0x963, 0xa69, 0xb60,\n\t0x5f0, 0x4f9, 0x7f3, 0x6fa, 0x1f6, 0xff , 0x3f5, 0x2fc,\n\t0xdfc, 0xcf5, 0xfff, 0xef6, 0x9fa, 0x8f3, 0xbf9, 0xaf0,\n\t0x650, 0x759, 0x453, 0x55a, 0x256, 0x35f, 0x55 , 0x15c,\n\t0xe5c, 0xf55, 0xc5f, 0xd56, 0xa5a, 0xb53, 0x859, 0x950,\n\t0x7c0, 0x6c9, 0x5c3, 0x4ca, 0x3c6, 0x2cf, 0x1c5, 0xcc ,\n\t0xfcc, 0xec5, 0xdcf, 0xcc6, 0xbca, 0xac3, 0x9c9, 0x8c0,\n\t0x8c0, 0x9c9, 0xac3, 0xbca, 0xcc6, 0xdcf, 0xec5, 0xfcc,\n\t0xcc , 0x1c5, 0x2cf, 0x3c6, 0x4ca, 0x5c3, 0x6c9, 0x7c0,\n\t0x950, 0x859, 0xb53, 0xa5a, 0xd56, 0xc5f, 0xf55, 0xe5c,\n\t0x15c, 0x55 , 0x35f, 0x256, 0x55a, 0x453, 0x759, 0x650,\n\t0xaf0, 0xbf9, 0x8f3, 0x9fa, 0xef6, 0xfff, 0xcf5, 0xdfc,\n\t0x2fc, 0x3f5, 0xff , 0x1f6, 0x6fa, 0x7f3, 0x4f9, 0x5f0,\n\t0xb60, 0xa69, 0x963, 0x86a, 0xf66, 0xe6f, 0xd65, 0xc6c,\n\t0x36c, 0x265, 0x16f, 0x66 , 0x76a, 0x663, 0x569, 0x460,\n\t0xca0, 0xda9, 0xea3, 0xfaa, 0x8a6, 0x9af, 0xaa5, 0xbac,\n\t0x4ac, 0x5a5, 0x6af, 0x7a6, 0xaa , 0x1a3, 0x2a9, 0x3a0,\n\t0xd30, 0xc39, 0xf33, 0xe3a, 0x936, 0x83f, 0xb35, 0xa3c,\n\t0x53c, 0x435, 0x73f, 0x636, 0x13a, 0x33 , 0x339, 0x230,\n\t0xe90, 0xf99, 0xc93, 0xd9a, 0xa96, 0xb9f, 0x895, 0x99c,\n\t0x69c, 0x795, 0x49f, 0x596, 0x29a, 0x393, 0x99 , 0x190,\n\t0xf00, 0xe09, 0xd03, 0xc0a, 0xb06, 0xa0f, 0x905, 0x80c,\n\t0x70c, 0x605, 0x50f, 0x406, 0x30a, 0x203, 0x109, 0x0\n};\n\nstatic int verticesAtEndsOfEdges[24] = {\n\t0,  1,\n\t1,  2,\n\t2,  3,\n\t3,  0,\n\t4,  5,\n\t5,  6,\n\t6,  7,\n\t7,  4,\n\t0,  4,\n\t1,  5,\n\t2,  6,\n\t3,  7\n};\n\n//\n// helper functions\n//\n\nint findIndex(Values edgeValue) {\n\tint cubeIndex = 0;\n\n\tif (edgeValue.edge0Val > threshold) {\n\t\tcubeIndex += 1;\n\t}\n\tif (edgeValue.edge1Val > threshold) {\n\t\tcubeIndex += 2;\n\t}\n\tif (edgeValue.edge2Val > threshold) {\n\t\tcubeIndex += 4;\n\t}\n\tif (edgeValue.edge3Val > threshold) {\n\t\tcubeIndex += 8;\n\t}\n\tif (edgeValue.edge4Val > threshold) {\n\t\tcubeIndex += 16;\n\t}\n\tif (edgeValue.edge5Val > threshold) {\n\t\tcubeIndex += 32;\n\t}\n\tif (edgeValue.edge6Val > threshold) {\n\t\tcubeIndex += 64;\n\t}\n\tif (edgeValue.edge7Val > threshold) {\n\t\tcubeIndex += 128;\n\t}\n\n\treturn cubeIndex;\n}\n\nfloat getValueAtEdge(Values val, int i) {\n\tif (i == 0) {\n\t\treturn val.edge0Val;\n\t}\n\telse if (i == 1) {\n\t\treturn val.edge1Val;\n\t}\n\telse if (i == 2) {\n\t\treturn val.edge2Val;\n\t}\n\telse if (i == 3) {\n\t\treturn val.edge3Val;\n\t}\n\telse if (i == 4) {\n\t\treturn val.edge4Val;\n\t}\n\telse if (i == 5) {\n\t\treturn val.edge5Val;\n\t}\n\telse if (i == 6) {\n\t\treturn val.edge6Val;\n\t}\n\telse {\n\t\treturn val.edge7Val;\n\t}\n}\n\nValues zeroValuesStruct() {\n\tValues val;\n\tval.edge0Val = 0;\n\tval.edge1Val = 0;\n\tval.edge2Val = 0;\n\tval.edge3Val = 0;\n\tval.edge4Val = 0;\n\tval.edge5Val = 0;\n\tval.edge6Val = 0;\n\tval.edge7Val = 0;\n\n\treturn val;\n}\n\n//\n// field function evaluation\n//\n\nfloat metaballFalloffFunction(float factor, float3 dist) {\n#ifdef GENERIC_METABALL_FUNCTION\n\treturn factor / (dist.x * dist.x + dist.y * dist.y + dist.z * dist.z);\n#endif\n#ifdef ELECTRIC_POTENTIAL_FUNCTION\n\treturn 8.987551788e9 * factor / sqrt(dist.x * dist.x + dist.y * dist.y + dist.z * dist.z);\n#endif\n}\n\nValues evaluateFieldFunction(int pos) {\n\tValues edgeValues = zeroValuesStruct();\n\n\tfor (int i = 0; i < numMetaballs; i++) {\n\t\tfloat3 dist = positions[pos].edge0Pos - metaballs[i].position;\n\t\tedgeValues.edge0Val += metaballFalloffFunction(metaballs[i].factor, dist);\n\n\t\tdist = positions[pos].edge1Pos - metaballs[i].position;\n\t\tedgeValues.edge1Val += metaballFalloffFunction(metaballs[i].factor, dist);\n\n\t\tdist = positions[pos].edge2Pos - metaballs[i].position;\n\t\tedgeValues.edge2Val += metaballFalloffFunction(metaballs[i].factor, dist);\n\n\t\tdist = positions[pos].edge3Pos - metaballs[i].position;\n\t\tedgeValues.edge3Val += metaballFalloffFunction(metaballs[i].factor, dist);\n\n\t\tdist = positions[pos].edge4Pos - metaballs[i].position;\n\t\tedgeValues.edge4Val += metaballFalloffFunction(metaballs[i].factor, dist);\n\n\t\tdist = positions[pos].edge5Pos - metaballs[i].position;\n\t\tedgeValues.edge5Val += metaballFalloffFunction(metaballs[i].factor, dist);\n\n\t\tdist = positions[pos].edge6Pos - metaballs[i].position;\n\t\tedgeValues.edge6Val += metaballFalloffFunction(metaballs[i].factor, dist);\n\n\t\tdist = positions[pos].edge7Pos - metaballs[i].position;\n\t\tedgeValues.edge7Val += metaballFalloffFunction(metaballs[i].factor, dist);\n\t}\n\n\treturn edgeValues;\n}\n\n//\n// computer shader kernel\n//\n\n[numthreads(8,8,8)]\nvoid Calculate(uint3 id : SV_DispatchThreadID) {\n\tint pos = id.x + width * (id.y + height * id.z);\n\n\t// find scalar values of a field on this position\n\tValues edgeValues = evaluateFieldFunction(pos);\n\n\t// partial marching cubes algorithm\n\n\tint cubeIndex = findIndex(edgeValues);\n\tint pattern = edgeTable[cubeIndex];\n\n\tfloat3 verticesArr[12] = {\n\t\tfloat3(0, 0, 0),\n\t\tfloat3(0, 0, 0),\n\t\tfloat3(0, 0, 0),\n\t\tfloat3(0, 0, 0),\n\t\tfloat3(0, 0, 0),\n\t\tfloat3(0, 0, 0),\n\t\tfloat3(0, 0, 0),\n\t\tfloat3(0, 0, 0),\n\t\tfloat3(0, 0, 0),\n\t\tfloat3(0, 0, 0),\n\t\tfloat3(0, 0, 0),\n\t\tfloat3(0, 0, 0)\n\t};\n\n\tfor (int edge = 0; edge < 12; edge++) {\n\t\tif ((pattern & 1 << edge) != 0) {\n\t\t\tint vertIndex0 = verticesAtEndsOfEdges[(int)(edge * 2)];\n\t\t\tint vertIndex1 = verticesAtEndsOfEdges[(int)(edge * 2 + 1)];\n\n\t\t\tfloat vertValue0 = getValueAtEdge(edgeValues, vertIndex0);\n\t\t\tfloat vertValue1 = getValueAtEdge(edgeValues, vertIndex1);\n\n\t\t\tfloat3 vertPosition0 = positions[pos].centerPos + edgeMap[vertIndex0];\n\t\t\tfloat3 vertPosition1 = positions[pos].centerPos + edgeMap[vertIndex1];\n\n\t\t\tfloat delta = (threshold - vertValue0) / (vertValue1 - vertValue0);\n\n\t\t\t// lineary interpolate positions for smooth surface\n\t\t\tverticesArr[edge] = vertPosition0 + delta * (vertPosition1 - vertPosition0);\n\t\t}\n\t}\n\n\t// save processed data to edgeVertices buffer\n\tedgeVertices[pos].index = cubeIndex;\n\tedgeVertices[pos].edge0 = verticesArr[0];\n\tedgeVertices[pos].edge1 = verticesArr[1];\n\tedgeVertices[pos].edge2 = verticesArr[2];\n\tedgeVertices[pos].edge3 = verticesArr[3];\n\tedgeVertices[pos].edge4 = verticesArr[4];\n\tedgeVertices[pos].edge5 = verticesArr[5];\n\tedgeVertices[pos].edge6 = verticesArr[6];\n\tedgeVertices[pos].edge7 = verticesArr[7];\n\tedgeVertices[pos].edge8 = verticesArr[8];\n\tedgeVertices[pos].edge9 = verticesArr[9];\n\tedgeVertices[pos].edge10 = verticesArr[10];\n\tedgeVertices[pos].edge11 = verticesArr[11];\n}\n",
+			"file": "Assets/MarchingCubesComputeShader.compute",
+			"file_size": 7603,
+			"file_write_time": 131655370939745515,
+			"settings":
+			{
+				"buffer_size": 7600,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'\n\nShader \"Unlit/PhonMultiLight\"\n{\n\tProperties\n\t{\n\t\t_Color (\"Color\", Color) = (1, 1, 1, 1) //The color of our object\n        _Tex (\"Pattern\", 2D) = \"white\" {} //Optional texture\n\n        _Shininess (\"Shininess\", Float) = 10 //Shininess\n        _SpecColor (\"Specular Color\", Color) = (1, 1, 1, 1) //Specular highlights color\n\t}\n\tSubShader\n\t{\n\t\tTags { \"RenderType\"=\"Opaque\" }\n\t\tLOD 100\n\n\t\tPass\n\t\t{\n\t\t\tTags { \"LightMode\" = \"ForwardBase\" } //For the first light\n\n\t\t\tCGPROGRAM\n            #pragma vertex vert\n            #pragma fragment frag\n\n            #include \"UnityCG.cginc\" //Provides us with light data, camera information, etc\n\n            uniform float4 _LightColor0; //From UnityCG\n\n            sampler2D _Tex; //Used for texture\n            float4 _Tex_ST; //For tiling\n\n            uniform float4 _Color; //Use the above variables in here\n            uniform float4 _SpecColor;\n            uniform float _Shininess;\n\n            struct appdata\n            {\n                float4 vertex : POSITION;\n                float3 normal : NORMAL;\n                float2 uv : TEXCOORD0;\n            };\n\n            struct v2f\n            {\n                float4 pos : POSITION;\n                float3 normal : NORMAL;\n                float2 uv : TEXCOORD0;\n                float4 posWorld : TEXCOORD1;\n            };\n\n            v2f vert(appdata v)\n            {\n                v2f o;\n\n                o.posWorld = mul(unity_ObjectToWorld, v.vertex); //Calculate the world position for our point\n                o.normal = normalize(mul(float4(v.normal, 0.0), unity_WorldToObject).xyz); //Calculate the normal\n                o.pos = UnityObjectToClipPos(v.vertex); //And the position\n                o.uv = TRANSFORM_TEX(v.uv, _Tex);\n\n                return o;\n            }\n\n            fixed4 frag(v2f i) : COLOR\n            {\n                float3 normalDirection = normalize(i.normal);\n                float3 viewDirection = normalize(_WorldSpaceCameraPos - i.posWorld.xyz);\n\n                float3 vert2LightSource = _WorldSpaceLightPos0.xyz - i.posWorld.xyz;\n                float oneOverDistance = 1.0 / length(vert2LightSource);\n                float attenuation = lerp(1.0, oneOverDistance, _WorldSpaceLightPos0.w); //Optimization for spot lights. This isn't needed if you're just getting started.\n                float3 lightDirection = _WorldSpaceLightPos0.xyz - i.posWorld.xyz * _WorldSpaceLightPos0.w;\n\n                float3 ambientLighting = UNITY_LIGHTMODEL_AMBIENT.rgb * _Color.rgb; //Ambient component\n                float3 diffuseReflection = attenuation * _LightColor0.rgb * _Color.rgb * max(0.0, dot(normalDirection, lightDirection)); //Diffuse component\n                float3 specularReflection;\n                if (dot(i.normal, lightDirection) < 0.0) //Light on the wrong side - no specular\n                {\n                    specularReflection = float3(0.0, 0.0, 0.0);\n            \t  }\n                else\n                {\n                    //Specular component\n                    specularReflection = attenuation * _LightColor0.rgb * _SpecColor.rgb * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), _Shininess);\n                }\n\n                float3 color = (ambientLighting + diffuseReflection) * tex2D(_Tex, i.uv) + specularReflection; //Texture is not applient on specularReflection\n                return float4(color, 1.0);\n            }\n\n        \tENDCG\n\t\t}\n\t}\n}\n",
+			"file": "Assets/PhonMultiLight.shader",
+			"file_size": 3620,
+			"file_write_time": 131655292502896236,
+			"settings":
+			{
+				"buffer_size": 3523,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -765,10 +816,12 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/Danny/Documents/Unity/Projects/LightningEngine/Assets"
+		"/F/Unity/LightingEngine/Assets"
 	],
 	"file_history":
 	[
+		"/F/Unity/LightingEngine/Temp/Compiled-MarchingCubesComputeShader-.shader",
+		"/F/Unity/LightingEngine/LightningEngine.sublime-project",
 		"/C/Users/Danny/Documents/Unity/Projects/LightningEngine/LightningEngine.sublime-project",
 		"/C/Users/Danny/Documents/Begin stap 2",
 		"/C/Users/Danny/Documents/Unity/Projects/MeshTest/.gitignore",
@@ -894,13 +947,11 @@
 		"/C/Users/Danny/AppData/Roaming/Sublime Text 3/Packages/SFTP/SFTP.sublime-settings",
 		"/C/Users/Danny/AppData/Local/Temp/scp48929/var/ftp/wp-content/themes/ph/header.php",
 		"/C/Users/Danny/AppData/Local/Temp/scp06005/var/ftp/wp-content/themes/ph/sass/custom/_custom.scss",
-		"/C/Users/Danny/AppData/Local/Temp/scp55625/var/ftp/wp-content/themes/ph/sidebar.php",
-		"/C/Users/Danny/AppData/Local/Temp/scp45427/var/ftp/wp-content/themes/ph/page.php",
-		"/C/Users/Danny/AppData/Local/Temp/scp06450/var/ftp/wp-content/themes/ph/sass/style.scss"
+		"/C/Users/Danny/AppData/Local/Temp/scp55625/var/ftp/wp-content/themes/ph/sidebar.php"
 	],
 	"find":
 	{
-		"height": 30.0
+		"height": 50.0
 	},
 	"find_in_files":
 	{
@@ -931,24 +982,24 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "LightningEngine.sublime-project",
+					"file": "Assets/PhongLightning.shader",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 203,
+						"buffer_size": 5845,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								203
+								379,
+								379
 							]
 						],
 						"settings":
@@ -959,12 +1010,27 @@
 							{
 								"close":
 								{
+									"1":
+									[
+										391,
+										392
+									]
 								},
 								"icon":
 								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"region.purplish"
+									]
 								},
 								"open":
 								{
+									"1":
+									[
+										213,
+										214
+									]
 								},
 								"unmatched":
 								{
@@ -972,11 +1038,46 @@
 							},
 							"bracket_highlighter.clone_regions":
 							[
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
 								"bh_unmatched",
 								"bh_unmatched_center",
 								"bh_unmatched_open",
@@ -987,46 +1088,1051 @@
 								"bh_round_open",
 								"bh_round_close",
 								"bh_round_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content"
+							],
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										381,
+										382
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"region.purplish"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										213,
+										214
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
 								"bh_tag",
 								"bh_tag_center",
 								"bh_tag_open",
 								"bh_tag_close",
 								"bh_tag_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
 								"bh_single_quote",
 								"bh_single_quote_center",
 								"bh_single_quote_open",
 								"bh_single_quote_close",
 								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
 								"bh_curly",
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
 								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
 								"bh_c_define",
 								"bh_c_define_center",
 								"bh_c_define_open",
 								"bh_c_define_close",
 								"bh_c_define_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content"
+							],
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/Unity3D Shader Highlighter and Snippets/UnityShader.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Users/Familie Dorstijn/AppData/Local/Temp/Temp1_builtin_shaders-2017.3.1f1.zip/DefaultResourcesExtra/Standard.shader",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11946,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7771,
+								7771
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.clone": -1,
+							"bracket_highlighter.clone_locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										7846,
+										7847
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"region.purplish"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										7303,
+										7304
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.clone_regions":
+							[
 								"bh_square",
 								"bh_square_center",
 								"bh_square_open",
 								"bh_square_close",
-								"bh_square_content"
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content"
+							],
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										7846,
+										7847
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"region.purplish"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										7303,
+										7304
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content"
+							],
+							"git_gutter_is_enabled": false,
+							"syntax": "Packages/Unity3D Shader Highlighter and Snippets/UnityShader.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4069.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Assets/MCBlob.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 40997,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								14355,
+								14355
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.clone": -1,
+							"bracket_highlighter.clone_locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										14548,
+										14549
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"region.purplish"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										13545,
+										13546
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.clone_regions":
+							[
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content"
+							],
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										14554,
+										14555
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"region.purplish"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										13545,
+										13546
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content"
+							],
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/Unity3D/UnityC#.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 8928.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "Assets/Editor/MCBlobEditor.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 390,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								371,
+								371
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.clone": -1,
+							"bracket_highlighter.clone_locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										126,
+										127
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/round_bracket.png",
+										"region.yellowish"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										119,
+										120
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.clone_regions":
+							[
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content"
+							],
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										380,
+										381
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"region.purplish"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										340,
+										341
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content"
+							],
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/Unity3D/UnityC#.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "Assets/MarchingCubesComputeShader.compute",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7600,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5756,
+								5756
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.clone": -1,
+							"bracket_highlighter.clone_locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										5770,
+										5771
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/round_bracket.png",
+										"region.yellowish"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										5739,
+										5740
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.clone_regions":
+							[
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content"
+							],
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										5770,
+										5771
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/round_bracket.png",
+										"region.yellowish"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										5739,
+										5740
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content"
+							],
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/Unity3D Shader Highlighter and Snippets/UnityComputeShader.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4488.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "Assets/PhonMultiLight.shader",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3523,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3281,
+								3263
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.clone": 44,
+							"bracket_highlighter.clone_locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										3279,
+										3280
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"region.purplish"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										3039,
+										3040
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.clone_regions":
+							[
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content"
 							],
 							"bracket_highlighter.locations":
 							{
@@ -1045,11 +2151,46 @@
 							},
 							"bracket_highlighter.regions":
 							[
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
 								"bh_unmatched",
 								"bh_unmatched_center",
 								"bh_unmatched_open",
@@ -1060,55 +2201,22 @@
 								"bh_round_open",
 								"bh_round_close",
 								"bh_round_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content"
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content"
 							],
-							"git_gutter_is_enabled": false,
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/Unity3D Shader Highlighter and Snippets/UnityShader.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.x": 160.0,
+						"translation.y": 1181.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 5,
 					"type": "text"
 				}
 			]
