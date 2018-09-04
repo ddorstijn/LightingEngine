@@ -72,7 +72,7 @@ Shader "Unlit/PhongLightning"
                 float specularAmount = pow(specAngle, 1.0/_Shininess);
                 float3 specularLight = _SpecColor.rgb * _LightColor0.rgb * specularAmount;
 
-                float NdotL  = max(0.0, dot(i.worldNormal, lightDir));
+                float NdotL = max(0.0, dot(i.worldNormal, lightDir));
 
                 float3 ambient = UNITY_LIGHTMODEL_AMBIENT.rgb* _DiffuseColor;
                 float3 diffuse = _DiffuseColor * _LightColor0.rgb * NdotL;
